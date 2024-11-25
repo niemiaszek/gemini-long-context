@@ -9,6 +9,7 @@ version = "0.1.0"
 [tasks]
 
 [dependencies]
+python = '==3.10.14'
 pandas = ">=2.2.3,<3"
 requests = ">=2.32.3,<3"
 beautifulsoup4 = ">=4.12.3,<5"
@@ -16,3 +17,5 @@ ruff = ">=0.8.0,<0.9"
 ipykernel = ">=6.29.5,<7"
 ipywidgets = ">=8.1.5,<9"
 python-dotenv = ">=1.0.1,<2"
+google-generativeai = ">=0.8.3,<0.9"
+grpcio = ">=1.67.1,<2"
