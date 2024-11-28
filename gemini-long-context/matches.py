@@ -74,7 +74,7 @@ def get_match_stats(
             except:
                 driver.execute_script("arguments[0].click();", stats_tab)
 
-            sleep(2)
+            sleep(3)
             stats_container = wait.until(
                 EC.presence_of_element_located(
                     (By.CSS_SELECTOR, "[class^='styled__ContainerStats']")
@@ -94,7 +94,7 @@ def get_match_stats(
                     By.CSS_SELECTOR, "[class^='styled__ContainerText'] p"
                 )
                 home_value = values[0].text.rstrip("%")
-                away_value = values[1].text.rstrip("%")
+                away_value = values[2].text.rstrip("%")
 
                 try:
                     if "." in home_value or "." in away_value:
@@ -133,11 +133,11 @@ def process_match_data(
             try:
                 match_data = {
                     "home_team": {
-                        "shortname": match["home_team"]["shortname"],
+                        "name": match["home_team"]["nickname"],
                         "score": match["home_score"],
                     },
                     "away_team": {
-                        "shortname": match["away_team"]["shortname"],
+                        "name": match["away_team"]["nickname"],
                         "score": match["away_score"],
                     },
                 }
@@ -169,9 +169,9 @@ def process_match_data(
             try:
                 csv_matches.append(
                     {
-                        "home_team": match["home_team"]["shortname"],
+                        "home_team": match["home_team"]["nickname"],
                         "home_score": match["home_score"],
-                        "away_team": match["away_team"]["shortname"],
+                        "away_team": match["away_team"]["nickname"],
                         "away_score": match["away_score"],
                     }
                 )

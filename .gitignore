@@ -2,4 +2,3 @@
 .pixi
 *.egg-info
 .env
-data/*
