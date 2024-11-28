@@ -121,7 +121,6 @@ def get_match_stats(
             sleep(2**attempt)
 
 
-
 def process_match_data(
     raw_data: Dict,
     week: int,
@@ -152,10 +151,10 @@ def process_match_data(
                             for stat_name, stat_values in stats.items():
                                 match_data["home_team"][stat_name] = stat_values["home"]
                                 match_data["away_team"][stat_name] = stat_values["away"]
-                    
+
                     # Fetch comments for completed matches
                     print(f"Getting comments for match {match['id']}...")
-                    comments = fetch_match_comments(match['id'], subscription_key)
+                    comments = fetch_match_comments(match["id"], subscription_key)
                     if comments:
                         match_data["commentary"] = comments
 
@@ -171,36 +170,40 @@ def process_match_data(
                 )
         return matches
     else:
-        # CSV format remains unchanged
-        return process_csv_matches(raw_data)
+        # Simple CSV format - skip problematic matches
+        csv_matches = []
+        for match in raw_data["matches"]:
+            try:
+                csv_matches.append(
+                    {
+                        "home_team": match["home_team"]["nickname"],
+                        "home_score": match["home_score"],
+                        "away_team": match["away_team"]["nickname"],
+                        "away_score": match["away_score"],
+                    }
+                )
+            except KeyError as e:
+                print(f"Error processing match for CSV in week {week}: {str(e)}")
+        return csv_matches
 
-def fetch_match_comments(match_id: int, subscription_key: str, max_retries: int = 3) -> Optional[List[Dict]]:
+
+def fetch_match_comments(
+    match_id: int, subscription_key: str, max_retries: int = 3
+) -> Optional[List[Dict]]:
     url = f"https://apim.laliga.com/webview/api/web/matches/{match_id}/comments"
     params = {"contentLanguage": "en", "subscription-key": subscription_key}
 
-    for attempt in range(max_retries):
-        try:
-            response = requests.get(url, params=params)
-            response.raise_for_status()
-            data = response.json()
-            
-            # Process and simplify comments
-            processed_comments = [
-                {
-                    "time": comment["time"],
-                    "content": comment["content"]
-                }
-                for comment in data.get("match_commentaries", [])
-            ]
-            
-            return processed_comments
-            
-        except RequestException as e:
-            if attempt == max_retries - 1:
-                print(f"Failed to fetch comments for match {match_id} after {max_retries} attempts: {str(e)}")
-                return None
-            print(f"Attempt {attempt + 1} failed, retrying...")
-            sleep(2**attempt)
+    response = requests.get(url, params=params)
+    response.raise_for_status()
+    data = response.json()
+    # Process and simplify comments
+    comments = []
+    for comment in data["match_commentaries"]:
+        if "time" in comment:
+            comments.append({"time": comment["time"], "content": comment["content"]})
+
+    return comments
+
 
 def main():
     load_dotenv()
@@ -232,7 +235,9 @@ def main():
                     matches_by_week[f"week{week}"] = detailed_matches
 
                 # Process simple data for CSV
-                csv_matches = process_match_data(raw_data, week, subscription_key, detailed=False)
+                csv_matches = process_match_data(
+                    raw_data, week, subscription_key, detailed=False
+                )
                 if csv_matches:
                     df = pd.DataFrame(csv_matches)
                     csv_filename = f"data/matches/week{week}.csv"
