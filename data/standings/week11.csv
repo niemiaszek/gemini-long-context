@@ -1,0 +1,21 @@
+position,team,points,played,won,drawn,lost,goals_for,goals_against,goal_difference
+1,FC Barcelona,30,11,10,0,1,37,10,+27
+2,Real Madrid,24,11,7,3,1,21,11,+10
+3,Villarreal CF,21,11,6,3,2,20,19,+1
+4,Atlético de Madrid,20,11,5,5,1,16,7,+9
+5,Athletic Club,18,11,5,3,3,17,11,+6
+6,Real Betis,18,11,5,3,3,11,9,+2
+7,RCD Mallorca,18,11,5,3,3,10,8,+2
+8,CA Osasuna,18,11,5,3,3,16,16,0
+9,Rayo Vallecano,16,11,4,4,3,12,10,+2
+10,Sevilla FC,15,11,4,3,4,12,15,-3
+11,RC Celta,13,11,4,1,6,17,20,-3
+12,Real Sociedad,12,11,3,3,5,8,10,-2
+13,Girona FC,12,11,3,3,5,11,14,-3
+14,CD Leganés,11,11,2,5,4,9,12,-3
+15,Getafe CF,10,11,1,7,3,8,9,-1
+16,Deportivo Alavés,10,11,3,1,7,13,19,-6
+17,RCD Espanyol de Barcelona,10,11,3,1,7,10,19,-9
+18,UD Las Palmas,9,11,2,3,6,13,19,-6
+19,Real Valladolid CF,8,11,2,2,7,9,23,-14
+20,Valencia CF,7,11,1,4,6,8,17,-9
